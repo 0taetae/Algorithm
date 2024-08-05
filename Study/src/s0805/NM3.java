@@ -2,12 +2,12 @@ package s0805;
 
 import java.util.Scanner;
 
-public class NM1 {
+public class NM3 {
+
 	static int N;
 	static int M;
-	static boolean[] visit;
 	static int[] num;
-	
+	static boolean[] visit;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		N = sc.nextInt();
@@ -28,14 +28,10 @@ public class NM1 {
 			return;
 		}
 		for(int i=1;i<=N;i++) {
-			if(!visit[i]) {
-				visit[i]=true;
-				num[idx]=i;
-				comb(idx+1);
-				visit[i]=false;
-			}
+			num[idx]=i;
+			comb(idx+1);
+				
 		}
 	}
+
 }
-
-
