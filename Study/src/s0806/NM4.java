@@ -2,11 +2,13 @@ package s0806;
 
 import java.util.Scanner;
 
-public class NM1 {
+public class NM4 {
+
 	static int N;
 	static int M;
-	static boolean[] visit;
 	static int[] num;
+	static boolean[] visit;
+	static StringBuilder sb = new StringBuilder();
 	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -16,24 +18,23 @@ public class NM1 {
 		num = new int[M];
 		visit = new boolean[N+1];
 		
-		comb(0);
+		comb(1, 0);
+		
+		System.out.println(sb);
 
 	}
-	static void comb(int idx) {
+	static void comb(int start, int idx) {
 		if(idx==M) {
 			for(int i=0;i<M;i++) {
-				System.out.print(num[i]+" ");
+				sb.append(num[i]);
+				sb.append(" ");
 			}
-			System.out.println();
+			sb.append("\n");
 			return;
 		}
-		for(int i=1;i<=N;i++) {
-			if(!visit[i]) {
-				visit[i]=true;
-				num[idx]=i;
-				comb(idx+1);
-				visit[i]=false;
-			}
+		for(int i=start;i<=N;i++) {
+			num[idx]=i;
+			comb(i,idx+1);
 		}
 	}
 
