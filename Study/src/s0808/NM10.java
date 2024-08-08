@@ -1,9 +1,9 @@
-package s0807;
+package s0808;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class NM9 {
+public class NM10 {
 
 	static int[] arr ;
 	static int[] num;
@@ -25,11 +25,11 @@ public class NM9 {
 		num = new int[M];
 		visit = new boolean[N+1];
 		
-		Comb(0);
+		Comb(1, 0);
 		
 
 	}
-	public static void Comb(int idx) {
+	public static void Comb(int start, int idx) {
 		if(idx==M) {
 			for(int i=0;i<M;i++) {
 				System.out.print(num[i]+" ");
@@ -37,12 +37,14 @@ public class NM9 {
 			System.out.println();
 			return;
 		}
-		for(int i=1;i<=N;i++) {
+		int before = 0;
+		for(int i=start;i<=N;i++) {
 			if(!visit[i]) {
-				if(num[idx]!=arr[i]) {
+				if(before !=arr[i]) {
 					visit[i]=true;
 					num[idx]=arr[i];
-					Comb(idx+1);
+					before = arr[i];
+					Comb(i+1,idx+1);
 					visit[i]=false;
 				}
 				
