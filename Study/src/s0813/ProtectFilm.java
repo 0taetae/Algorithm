@@ -40,28 +40,30 @@ public class ProtectFilm {
 			for(int c=0;c<W;c++) {
 				dfs(c);
 			}
+			//System.out.println(Arrays.stream(isOk).sum());
+			/*
 			if(W==Arrays.stream(isOk).sum()) {
 				System.out.println("#"+i+" "+0);
 				continue;
-			}
-			System.out.println("#"+i+" "+"change");
+			}*/
+			//System.out.println("#"+i+" "+"change");
 			
 		}
 
 	}
 	public static void dfs(int c) {
-		for(int r=0;r<D-K;r++) {
-			for(int k=0;k<K;k++) {
-				if(film[r][c]==film[r+k][c]) {
-					isOk[c]=1;
-				}
-				else {
-					isOk[c]=0;
-				}
+		for(int r=0;r<D-1;r++) {
+			if(film[r][c]==film[r+1][c]) {
+				isOk[c]++;
+			}else {
+				isOk[c]=0;
 			}
-			if(isOk[c]==1) {
+			
+			// 성능검사 필요없음
+			if(isOk[c]==K) {
 				break;
 			}
+			
 		}
 	}
 
