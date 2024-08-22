@@ -3,6 +3,7 @@ package s0817;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -67,11 +68,14 @@ public class Lab {
 	public static void virus() {
 		Queue<Idx> q = new LinkedList<>();
 		
+		// 바이러스 퍼뜨리기 전 배열 복사 
 		int[][] copylab = new int[N][M];
+		for(int r=0; r<N;r++) {
+			copylab[r] = Arrays.copyOf(lab[r], lab[r].length);
+		}
+		
 		for(int r=0;r<N;r++) {
 			for(int c=0;c<M;c++) {
-				copylab[r][c] = lab[r][c];
-				
 				// 바이러스가 있는 곳은 큐에 넣기 
 				if(copylab[r][c]==2) {
 					q.offer(new Idx(r,c));
@@ -92,12 +96,11 @@ public class Lab {
 				
 				if (x < 0 || y < 0 || x >= N || y >= M ) continue;
 				
-				// 바이러스 퍼짐  
+				// 빈칸일 때 바이러스 퍼짐  
 				if(copylab[x][y]==0) {
 					copylab[x][y] = 2;
 					q.offer(new Idx(x,y));
 				}
-				
 			}
 		}
 		Safe(copylab);
@@ -109,6 +112,7 @@ public class Lab {
 		int size=0;
 		for(int r=0;r<N;r++) {
 			for(int c=0; c<M;c++) {
+				// 벽으로 인해 바이러스가 퍼지지 못한 곳 
 				if(copylab[r][c]==0) {
 					size++;
 				}
@@ -116,10 +120,7 @@ public class Lab {
 		}
 		// 안전영역 최댓값 구하기 
 		result = Math.max(result, size);
-		
 	}
-	
-
 }
 
 /*
