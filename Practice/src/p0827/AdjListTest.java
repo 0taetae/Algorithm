@@ -1,17 +1,20 @@
 package p0827;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class AdjListTest {
 	
 	static class Node{
 		int to;
-		Node link;
-		public Node(int to, AdjListTest.Node link) {
+		Node next;
+		public Node(int to, Node next) {
 			super();
 			this.to = to;
-			this.link = link;
+			this.next = next;
+		}
+		@Override
+		public String toString() {
+			return "Node [to=" + to + ", next=" + next  + "]";
 		}
 	}
 
@@ -20,12 +23,18 @@ public class AdjListTest {
 		int V = sc.nextInt();  // 정점 개수
 		int E = sc.nextInt();  // 간선 개수 
 		
-		// 무향 그래프
-		int[][] adjMatrix = new int[V][V];  // 기본 초기화 값 0 : 인접하지 않는 상태
+		Node[] adjList = new Node[V];  // 각 노드의 연결리스트의 헤드리스트 
 		for(int i=0;i<E;i++) {
 			int from = sc.nextInt();
 			int to = sc.nextInt();
-			adjMatrix[from][to] = adjMatrix[to][from] = 1;
+			
+			// 첫노드로 삽입하는 알고리즘
+			adjList[from] = new Node(to, adjList[from]);
+			adjList[to] = new Node(from, adjList[to]);
+		}
+		
+		for(int i=0;i<V;i++) {
+			System.out.println(adjList[i]);
 		}
 		
 		
