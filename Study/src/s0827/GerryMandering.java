@@ -56,6 +56,8 @@ public class GerryMandering {
         }
         
     }
+    
+    
     // 두 선거구로 나누기 위해, 부분집합 
     public static void powerSet(int cnt) {
         if (cnt == N) {
