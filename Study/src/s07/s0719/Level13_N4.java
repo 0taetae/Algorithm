@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.io.OutputStreamWriter;
 import java.io.BufferedWriter;
 
-public class LevelN13_N4 {
+public class Level13_N4 {
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

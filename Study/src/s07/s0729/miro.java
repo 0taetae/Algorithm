@@ -23,6 +23,4 @@ public class miro {
 		}
 
 	}
-	public static void BFS()
-
 }
