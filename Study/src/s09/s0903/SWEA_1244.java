@@ -21,7 +21,7 @@ public class SWEA_1244 {
 				num[j] = str.charAt(j)-'0';
 			}
 			K = Integer.parseInt(st.nextToken());  // 교환 횟수
-			K= Math.min(K, str.length());  // 최대 문자열 길이 6, 교환 횟수가 5이상이면 의미가 없음 
+			K= Math.min(K, str.length());  // 최대 문자열 길이 6, 교환 횟수가 5이상이면 의미가 없음 / 같은 자리를 여러 번 바꿔서 경우의 수가 중복되는 것이 있기 때문 
 			res = 0;
 			change(0);
 			sb.append("#").append(i).append(" ").append(res).append("\n");
