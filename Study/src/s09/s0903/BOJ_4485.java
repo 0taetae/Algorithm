@@ -11,12 +11,16 @@ public class BOJ_4485 {
 	static int N;
 	static int[][] minSum;
 	
-	static class Info{
+	static class Info implements Comparable<Info>{
 		int x,y, sum;
-		Info(int x, int y,int sum){
+		public Info(int x, int y,int sum){
 			this.x = x;
 			this.y = y;
 			this.sum = sum;
+		}
+		@Override
+		public int compareTo(Info o) {
+			return Integer.compare(this.sum, o.sum);
 		}
 	}
 
@@ -50,7 +54,7 @@ public class BOJ_4485 {
 		System.out.println(sb);
 	}
 	public static void move(int r, int c,int sum) {
-		Queue<Info> q = new LinkedList<Info>();
+		PriorityQueue<Info> q = new PriorityQueue<Info>();
 		q.offer(new Info(r,c,arr[r][c]));
 		
 		while(!q.isEmpty()) {
