@@ -24,18 +24,13 @@ public class SWEA_1952 {
             for (int i = 0; i < 12; i++) {
                 plan[i] = Integer.parseInt(st.nextToken());
             }
-
             // 1월
-            pay[0] = Math.min(price[0] * plan[0], price[1]);
-
-            // 2월
-            pay[1] = pay[0] + Math.min(price[0] * plan[1], price[1]);
-
-            for (int i = 2; i < 12; i++) {
-                // 1일권 또는 1달권을 사용하는 경우
+            pay[0] = Math.min(price[0] * plan[0], price[1]);  // base case 초기화 
+            for (int i = 1; i < 12; i++) {
+                
+                // 1일권 또는 1달권을 사용하는 경우 비교 
                 pay[i] = pay[i - 1] + Math.min(price[0] * plan[i], price[1]);
-
-                // 3달권을 사용하는 경우
+                // 3달권을 사용하는 경우와 비교
                 if (i >= 2) {
                     int cost3Month = price[2] + (i >= 3 ? pay[i - 3] : 0);
                     pay[i] = Math.min(pay[i], cost3Month);
