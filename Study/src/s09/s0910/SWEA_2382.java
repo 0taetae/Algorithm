@@ -4,133 +4,101 @@ import java.io.*;
 import java.util.*;
 
 public class SWEA_2382 {
-	
-	/*
-	K : ¹Ì»ı¹° ±ºÁı ¼ö
-	N * N : ±¸¿ª
-	°¡ÀåÀÚ¸®¿¡´Â Æ¯¼ö ¾àÇ°
-	1 »ó, 2 ÇÏ, 3 ÁÂ, 4 ¿ì
-	1½Ã°£¸¶´Ù ÀÌµ¿¹æÇâ¿¡ ÀÖ´Â ¼¿·Î ÀÌµ¿
-	¾àÇ°ÀÌ Ä¥ÇØÁø ¼¿¿¡ µµÂøÇÏ¸é ±ºÁı ³» ¹Ì»ı¹°ÀÇ Àı¹İÀÌ Á×À½ -> ÀÌµ¿¹æÇâÀÌ ¹İ´ë·Î ¹Ù²ñ
-	»ì¾Æ³²Àº ¹Ì»ı¹° ¼ö = ¿ø·¡ ¹Ì»ı¹° ¼ö /2
-	
-	µÎ °³ ÀÌ»óÀÇ ±ºÁıÀÌ ÇÑ ¼¿¿¡ ¸ğÀÌ´Â °æ¿ì ±ºÁıµéÀÌ ÇÕÃÄÁö°Ô µÊ
-	ÇÕÃÄÁø ±ºÁıÀÇ ¹Ì»ı ¹°ÀÇ ¼ö = ±ºÁıµéÀÇ ¹Ì»ı¹° ¼öÀÇ ÇÕ, ÀÌµ¿¹æÇâÀº ±ºÁıµé Áß ¹Ì»ı¹° ¼ö°¡ °¡Àå ¸¹Àº ±ºÁıÀÇ ÀÌµ¿¹æÇâÀÌ µÊ
-	
-	
-	M½Ã°£ ÈÄ ³²¾ÆÀÖ´Â ¹Ì»ı¹° ¼öÀÇ ÃÑÇÕ???
-	 */
-	
-	static int N, M, K;
-	static int[] dx = {0, -1, 1, 0, 0};
-	static int[] dy = {0, 0,0,-1, 1};
-	static int[][] arr;
-	static ArrayList<Info> micro;
-	
-	static class Info{
-		int x,y,cnt,dir;
-		Info(int x, int y,int cnt, int dir){
-			this.x = x;
-			this.y = y;
-			this.cnt = cnt;  // ¹Ì»ı¹° ¼ö
-			this.dir = dir;  // ÀÌµ¿¹æÇâ
-		}
-	}
+    
+    static int N, M, K;
+    static int[] dx = {0, -1, 1, 0, 0};  // ìƒ, í•˜, ì¢Œ, ìš°
+    static int[] dy = {0, 0, 0, -1, 1};
+    static ArrayList<Info> micro;
+    static Info[][] arr;
+    
+    static class Info {
+        int x, y, cnt, dir;
+        Info(int x, int y, int cnt, int dir) {
+            this.x = x;
+            this.y = y;
+            this.cnt = cnt;
+            this.dir = dir;
+        }
+    }
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
-		StringTokenizer st;
-		int T = Integer.parseInt(br.readLine());
-		for(int tc=1;tc<=T;tc++) {
-			st = new StringTokenizer(br.readLine());
-			N = Integer.parseInt(st.nextToken());
-			arr = new int[N][N];
-			M = Integer.parseInt(st.nextToken());
-			K = Integer.parseInt(st.nextToken());
-			micro = new ArrayList<>();
-			for(int i=0;i<K;i++) {
-				st = new StringTokenizer(br.readLine());
-				int r = Integer.parseInt(st.nextToken());
-				int c = Integer.parseInt(st.nextToken());
-				int cnt = Integer.parseInt(st.nextToken());
-				int dir = Integer.parseInt(st.nextToken());
-				arr[r][c] = 1;
-				micro.add(new Info(r,c,cnt,dir));
-			}
-			// M½Ã°£µ¿¾È ¹Ì»ı¹° º¯È­º¸±â
-			for(int i=0;i<M;i++) {
-				arr = new int[N][N];
-				for(int j=0;j<K;j++) {
-					if(micro.get(j).cnt <0) continue;
-					Info cur = micro.get(j);
-					arr[cur.x][cur.y] = 0;
-					int nx = cur.x + dx[cur.dir];
-					int ny = cur.y + dy[cur.dir];
-					
-					// ¾àÇ°Ã³¸®ÇÑ °÷À¸·Î °¡°Ô µÇ¸é 
-					if(nx==0 || ny==0 || nx==N-1 || ny==N-1) {
-						// ¹Ì»ı¹° ¼ö ¹İÀ¸·Î ÁÙÀÌ±â
-						int ncnt = cur.cnt/2;
-						// ¹İ´ë¹æÇâÀ¸·Î ¹Ù±¸±â
-						if(cur.dir == 1) {
-							int ndir=2;
-						}else if(cur.dir==2) {
-							int ndir=1;
-						}else if(cur.dir==3) {
-							int ndir=4;
-						}else {
-							int ndir=1;
-						}
-						arr[nx][ny] = 1;
-						arr[cur.x][cur.y]=0;
-						
-					}
-					// ´Ù¸¥ ±ºÁı°ú ¸¸³ª¸é
-					else if(arr[nx][ny]==1){
-						for(int s=0;s<K;s++) {
-							if(micro.get(s).x==nx && micro.get(s).y==ny) {
-								// ¹Ì»ı¹° ¼ö°¡ ¸¹Àº °ÍÀÇ ¹æÇâÀ¸·Î ¹Ù²Ù±â, ¹Ì»ı¹° ¼ö ÇÕÇÏ±â 
-								if(cur.cnt < micro.get(s).cnt) {
-									micro.get(s).cnt = micro.get(s).cnt + cur.cnt;
-									//micro.remove(j);
-									
-									micro.set(j, new Info(0,0,-1,0));
-									
-									arr[cur.x][cur.y]=0;
-								}else {
-									cur.cnt = micro.get(s).cnt+cur.cnt;
-									//micro.remove(s);
-									micro.set(s, new Info(0,0,-1,0));
-									cur.x = nx;
-									cur.y = ny;
-									arr[nx][ny] = 0;
-									arr[cur.x][cur.y]=1;
-								}
-							}
-						}
-					}
-					
-					
-				}
-			}
-			int res = 0;
-			for(int i=0;i<K;i++) {
-				if(micro.get(i).cnt <0) {
-					//System.out.println("¾ø¾î");
-					continue;
-				}
-				res+=micro.get(i).cnt;
-			}
-			System.out.println(res);
-			
-			// ¹Ì»ı¹°À» ÀÌµ¿½ÃÅ°°í ÇØ´ç ÀÎµ¦½ºÀÇ ¹è¿­°ªÀÌ 1ÀÌ¸é ¹Ì»ı¹° ¼ö ÇÕÇÏ±â, ¹Ì»ı¹° ¼ö°¡ ¸¹Àº °ÍÀÇ ¹æÇâÀ¸·Î ¹Ù²Ù±â
-			// idx=0,N-1ÀÏ¶§ ¹Ì»ı¹° ¼ö/2¹Ù²Ù±â
-			
-			
-			
-		}
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st;
+        int T = Integer.parseInt(br.readLine());
+        for (int tc = 1; tc <= T; tc++) {
+            st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
+            K = Integer.parseInt(st.nextToken());
+            micro = new ArrayList<>();
+            for (int i = 0; i < K; i++) {
+                st = new StringTokenizer(br.readLine());
+                int r = Integer.parseInt(st.nextToken());
+                int c = Integer.parseInt(st.nextToken());
+                int cnt = Integer.parseInt(st.nextToken());
+                int dir = Integer.parseInt(st.nextToken());
+                micro.add(new Info(r, c, cnt, dir));
+            }
 
-	}
 
+            for (int time = 0; time < M; time++) {
+                arr = new Info[N][N]; 
+
+                for (int i = 0; i < micro.size(); i++) {
+                    Info cur = micro.get(i);
+                    if (cur.cnt <= 0) continue;
+
+                    int nx = cur.x + dx[cur.dir];
+                    int ny = cur.y + dy[cur.dir];
+
+                    // ì•½ë¬¼ ì¹ í•´ì§„ ì…€ì— ë„ì°©í•˜ëŠ” ê²½ìš° 
+                    if (nx == 0 || ny == 0 || nx == N - 1 || ny == N - 1) {
+                        cur.cnt /= 2; 
+                        if (cur.dir == 1) cur.dir = 2;
+                        else if (cur.dir == 2) {
+                        	cur.dir = 1;
+                        }
+                        else if (cur.dir == 3) {
+                        	cur.dir = 4;
+                        }
+                        else if (cur.dir == 4) {
+                        	cur.dir = 3;
+                        }
+                    }
+                    
+                    // ë‘ê°œ ì´ìƒì˜ êµ°ì§‘ì´ í•œ ì…€ì— ëª¨ì´ëŠ” ê²½ìš° 
+                    if (arr[nx][ny] != null) {
+                        Info temp = arr[nx][ny];
+                        if (temp.cnt < cur.cnt) {
+                        	temp.dir = cur.dir;
+                        }
+                        temp.cnt += cur.cnt;
+                    } else {
+                    	arr[nx][ny] = new Info(nx, ny, cur.cnt, cur.dir);
+                    }
+                }
+
+                micro.clear();
+                // ë¯¸ìƒë¬¼ì´ ë‚¨ì•„ìˆëŠ” êµ°ì§‘ 
+                for (int i = 0; i < N; i++) {
+                    for (int j = 0; j < N; j++) {
+                        if (arr[i][j] != null && arr[i][j].cnt > 0) {
+                            micro.add(arr[i][j]);
+                        }
+                    }
+                }
+            }
+
+            // ë¯¸ìƒë¬¼ ìˆ˜ êµ¬í•˜ê¸° 
+            int res = 0;
+            for (Info info : micro) {
+                res += info.cnt;
+            }
+            sb.append("#").append(tc).append(" ").append(res).append("\n");
+        }
+        System.out.print(sb);
+    }
 }
+
+
