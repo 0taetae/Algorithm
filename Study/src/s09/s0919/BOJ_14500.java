@@ -4,74 +4,106 @@ import java.io.*;
 import java.util.*;
 
 public class BOJ_14500 {
-	
-	static int N, M, res;
-	static int[][] paper;
-	static int[] dx= {-1, 1, 0, 0};
-	static int[] dy = {0, 0, -1, 1};
-	static boolean[][] visited;
-	static class Info{
-		int x,y;
-		int cnt,val;
-		Info(int x, int y, int cnt, int val){
-			this.x = x;
-			this.y = y;
-			this.cnt = cnt;
-			this.val = val;
-		}
-	}
+    
+    static int N, M, res;
+    static int[][] paper;
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
 
-	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
-		
-		st = new StringTokenizer(br.readLine());
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
-		paper = new int[N][M];
-		
-		for(int r=0;r<N;r++) {
-			st = new StringTokenizer(br.readLine());
-			for(int c=0;c<M;c++) {
-				paper[r][c] = Integer.parseInt(st.nextToken());
-			}
-		}
-		res=0;
-		for(int r=0;r<N;r++) {
-			for(int c=0;c<M;c++) {
-				bfs(r,c,0,0);
-			}
-		}
-		System.out.println(res);
-		
 
-	}
-	static void bfs(int r, int c, int cnt,int val) {
-		Queue<Info> q = new LinkedList<>();
-		visited = new boolean[N][M];
-		visited[r][c] = true;
-		System.out.println("����:::::"+r+" "+c+" "+(cnt+1)+" "+(val+paper[r][c]));
-		q.add(new Info(r,c,cnt+1, val+paper[r][c]));
-		
-		while(!q.isEmpty()) {
-			Info cur = q.poll();
-			if(cur.cnt ==4) {
-				//res = Math.max(res, cur.val);
-				if(res < cur.val) {
-					res = cur.val;
-					System.out.println(r+" "+c+" "+cur.x+" "+cur.y+" "+cur.val+"!!!!!");
-				}
-			}
-			else {
-				for(int i=0;i<4;i++) {
-					int x = cur.x + dx[i];
-					int y = cur.y + dy[i];
-					if(x<0 || y<0 || x>=N || y>=M || visited[x][y]) continue;
-					q.add(new Info(x,y,cur.cnt+1,cur.val+paper[x][y]));
-					visited[x][y] = true;
-					System.out.println(x+" "+y+" "+(cur.cnt+1)+" "+(cur.val+paper[x][y]));
-				}
-			}
-		}
-	}
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        paper = new int[N][M];
+
+        for(int r = 0; r < N; r++) {
+        	st = new StringTokenizer(br.readLine());
+            for(int c = 0; c < M; c++) {
+                paper[r][c] = Integer.parseInt(st.nextToken());
+            }
+        }
+        res = 0;
+        int sum=0;
+        for(int r = 0; r < N; r++) {
+            for(int c = 0; c < M; c++) {
+            	// '-' 모양
+            	if(c<=M-4) {
+            		sum = paper[r][c] + paper[r][c+1] + paper[r][c+2] + paper[r][c+3];
+            		res = Math.max(res, sum);
+            	}
+            	// '|' 모양
+            	if(r<=N-4) {
+            		sum = paper[r][c] + paper[r+1][c] + paper[r+2][c] + paper[r+3][c];
+            		res = Math.max(res, sum);
+            	}
+            	// 'ㅁ' 모양
+            	if(c<=M-2 && r<=N-2) {
+            		sum = paper[r][c] + paper[r][c+1] + paper[r+1][c] + paper[r+1][c+1];
+            		res = Math.max(res, sum);
+            	}
+            	// 'ㄴ' 모양
+            	
+            	if(r<=N-3 && c<=M-2) {
+            		sum = paper[r][c] + paper[r+1][c] + paper[r+2][c] + paper[r+2][c+1];
+            		res = Math.max(res, sum);
+            		sum = paper[r+2][c] + paper[r][c+1] + paper[r+1][c + 1] + paper[r + 2][c + 1];
+            		res = Math.max(res, sum);
+            		sum = paper[r][c] + paper[r+1][c] + paper[r+2][c] + paper[r][c + 1];
+                    res = Math.max(res, sum);
+                    sum = paper[r][c] + paper[r][c+1] + paper[r+1][c+1] + paper[r+2][c + 1];
+                	res = Math.max(res, sum);
+            	}
+                if (r <= N-2 && c <= M-3) {
+                	sum = paper[r][c] + paper[r+1][c] + paper[r][c+1] + paper[r][c + 2];
+                	res = Math.max(res, sum);
+                	sum = paper[r][c] + paper[r+1][c] + paper[r+1][c+1] + paper[r+1][c + 2];
+                	res = Math.max(res, sum);
+                	sum = paper[r+1][c] + paper[r+1][c+1] + paper[r+1][c+2] + paper[r][c + 2];
+                	res = Math.max(res, sum);
+                	sum = paper[r][c] + paper[r][c+1] + paper[r][c+2] + paper[r+1][c + 2];
+                	res = Math.max(res, sum);
+                }
+                //z자 막대 모양
+                if (r <= N-3 && c <= M-2) {
+                	sum = paper[r][c] + paper[r+1][c] + paper[r+1][c+1] + paper[r+2][c + 1];
+                	res = Math.max(res, sum);
+                	sum = paper[r][c+1] + paper[r+1][c] + paper[r+1][c+1] + paper[r+2][c];
+                	res = Math.max(res, sum);
+                }
+                if (r <= N-3 && c <= M-3) {
+                	sum = paper[r][c] + paper[r][c+1] + paper[r+1][c+1] + paper[r+1][c + 2];
+                	res = Math.max(res, sum);
+                }
+                if (r <= N-2 && c <= M-3) {
+                	sum = paper[r+1][c] + paper[r][c+1] + paper[r+1][c+1] + paper[r][c + 2];
+                	res = Math.max(res, sum);
+                }
+                
+            	// 'ㅗ' 모양 
+                if (r >= 1 && c >= 1 && c < M - 1) {
+                    sum = paper[r][c] + paper[r-1][c] + paper[r][c-1] + paper[r][c+1];
+                    res = Math.max(res, sum);
+                }
+                // 'ㅜ' 모양
+                if (r < N - 1 && c >= 1 && c < M - 1) {
+                    sum = paper[r][c] + paper[r+1][c] + paper[r][c-1] + paper[r][c+1];
+                    res = Math.max(res, sum);
+                }
+                // 'ㅓ' 모양
+                if (r >= 1 && r < N - 1 && c >= 1) {
+                    sum = paper[r][c] + paper[r-1][c] + paper[r+1][c] + paper[r][c-1];
+                    res = Math.max(res, sum);
+                }
+                // 'ㅏ' 모양
+                if (r >= 1 && r < N - 1 && c < M - 1) {
+                    sum = paper[r][c] + paper[r-1][c] + paper[r+1][c] + paper[r][c+1];
+                    res = Math.max(res, sum);
+                }
+            }
+        }
+        System.out.println(res);
+    }
 }
