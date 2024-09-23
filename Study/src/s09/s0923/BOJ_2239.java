@@ -26,6 +26,7 @@ public class BOJ_2239 {
 		}
 		
 		check(0,0);
+		
 	}
 	// 해당 열, 행에 없는 숫자 하나씩 넣어봄 -> 백트래킹 
 	static void check(int r, int c) {
@@ -34,15 +35,13 @@ public class BOJ_2239 {
 			c=0;
 		}
 		if(r==9) {
-			StringBuilder sb = new StringBuilder();
-			for(int i=0;i<9;i++) {
-				for(int j=0;j<9;j++) {
-					sb.append(board[i][j]);
-				}
-				sb.append("\n");
-			}
-			System.out.println(sb);
-			return;
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    System.out.print(board[i][j]);
+                }
+                System.out.println();
+            }
+            System.exit(0);
 		}
 		if(board[r][c]==0) {
 			for(int i=1;i<=9;i++) {
