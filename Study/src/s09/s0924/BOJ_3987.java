@@ -46,6 +46,8 @@ public class BOJ_3987 {
         }
 
         System.out.println(resDir);
+        
+        // 시그널이 항성계 내에서 무한히 전파
         if(resTime == Integer.MAX_VALUE) {
         	System.out.println("Voyager");
         }else {
@@ -60,17 +62,17 @@ public class BOJ_3987 {
         while (true) {
             int x = r + dx[dir];
             int y = c + dy[dir];
-
+            
+            // 시그널이 블랙홀이 있는 칸을 만나거나 항성계를 벗어남 
             if (x < 0 || y < 0 || x >= N || y >= M || map[x][y] == 'C') {
                 return t;
             }
-
+            // 같은 방향, 같은 위치 -> 시그널이 무한히 전파 
             if (visited[x][y][dir]) {
                 return Integer.MAX_VALUE;
             }
+            
             visited[x][y][dir] = true;
-
-            t++; 
 
             if (map[x][y] == '/') {
                 switch (dir) {
@@ -87,7 +89,7 @@ public class BOJ_3987 {
                     case 3: dir = 0; break;
                 }
             }
-
+            t++; 
             r = x;
             c = y;
         }
