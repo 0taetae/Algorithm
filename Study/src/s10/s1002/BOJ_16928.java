@@ -76,7 +76,8 @@ public class BOJ_16928 {
 			for(int i=1;i<=6;i++) {
 				int next = cur.num +i;
 				
-				if(cur.num+i>=100) {
+				if(next>100) continue;
+				if(next==100) {
 					res = Math.min(res, cur.cnt+1);
 					return;
 				}
