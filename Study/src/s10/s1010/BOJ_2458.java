@@ -1,4 +1,4 @@
-package s10.s1009;
+package s10.s1010;
 
 import java.io.*;
 import java.util.*;
