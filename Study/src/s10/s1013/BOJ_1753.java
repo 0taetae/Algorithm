@@ -14,7 +14,7 @@ public class BOJ_1753 {
 		}
 		
 		@Override
-        public int compareTo(Info o) {
+        public int compareTo(Info o) {  // 가중치를 기준으로 정렬
             return this.weight - o.weight;
         }
 	}
@@ -33,6 +33,7 @@ public class BOJ_1753 {
 		E = Integer.parseInt(st.nextToken());
 		start = Integer.parseInt(br.readLine());
 		
+		// 2차원 인접리스트 
 		adjlst = new ArrayList<>();
 		for (int i = 0; i <= V; i++) {
 			adjlst.add(new ArrayList<>());
@@ -75,6 +76,7 @@ public class BOJ_1753 {
 
 			for (Info next : adjlst.get(cur.end)) {
 				int newDist = dist[cur.end] + next.weight;
+				// 최단경로 
 				if (newDist < dist[next.end]) {
 					dist[next.end] = newDist;
 					pq.add(new Info(next.end, newDist));
