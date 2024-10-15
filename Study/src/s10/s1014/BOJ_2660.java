@@ -11,10 +11,10 @@ public class BOJ_2660 {
         int[][] dist = new int[N+1][N+1];
         
         for (int i = 1; i <= N; i++) {
-            Arrays.fill(dist[i], Integer.MAX_VALUE / 2);
+            Arrays.fill(dist[i], Integer.MAX_VALUE);
             dist[i][i] = 0;
         }
-
+        // 친구
         while (true) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
@@ -23,7 +23,8 @@ public class BOJ_2660 {
             dist[a][b] = 1;
             dist[b][a] = 1;
         }
-
+        
+        // 친구 관계 -> 회원 점수 
         for (int k = 1; k <= N; k++) {
             for (int i = 1; i <= N; i++) {
                 for (int j = 1; j <= N; j++) {
@@ -33,8 +34,9 @@ public class BOJ_2660 {
         }
 
         int[] score = new int[N+1];
-        int minScore = Integer.MAX_VALUE;
+        int minScore = Integer.MAX_VALUE;  // 회장 - 점수가 가장 작은 사람
         
+        // 최종 각 회원 점수
         for (int i = 1; i <= N; i++) {
             for (int j = 1; j <= N; j++) {
                 if (i != j) {
@@ -44,7 +46,8 @@ public class BOJ_2660 {
             //System.out.println(score[i]);
             minScore = Math.min(minScore, score[i]);
         }
-
+        
+        // 회장 후보 리스트 
         ArrayList<Integer> lst = new ArrayList<>();
         for (int i = 1; i <= N; i++) {
             if (score[i] == minScore) {
