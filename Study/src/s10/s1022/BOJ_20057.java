@@ -1,4 +1,4 @@
-package s10.s1021;
+package s10.s1022;
 
 import java.io.*;
 import java.util.*;
@@ -34,7 +34,8 @@ public class BOJ_20057 {
                 map[r][c] = Integer.parseInt(st.nextToken());
             }
         }
-
+        
+        // 격자의 가운데 칸부터 토네이도의 이동이 시작 
         int startR = N / 2;
         int startC = N / 2;
 
@@ -43,6 +44,7 @@ public class BOJ_20057 {
 
         while (startR != 0 || startC != 0) {
             for (int i = 0; i < 2; i++) {
+            	System.out.println(dir+"방향으로 "+move+"칸 이동 ");
                 for (int j = 0; j < move; j++) {
                     int nextR = startR + dx[dir];
                     int nextC = startC + dy[dir];
@@ -50,7 +52,9 @@ public class BOJ_20057 {
                     if (nextR < 0 || nextC < 0 || nextR >= N || nextC >= N) {
                         continue;  
                     }
-
+                    System.out.println("y: "+nextR+" "+nextC);
+                    // startR, startC : x
+                    // nextR, nextC : y
                     spread(nextR, nextC, dir);
 
                     startR = nextR;
@@ -70,10 +74,15 @@ public class BOJ_20057 {
     }
 
     private static void spread(int r, int c, int dir) {
+    	System.out.println("퍼뜨리기 시작");
         // 모래가 없는 경우
-        if (map[r][c] == 0) return;
-
+        if (map[r][c] == 0) {
+        	System.out.println("이 칸엔 모래가 없어");
+        	return;
+        }
+        
         int cur = map[r][c];
+        System.out.println("이 칸에는 "+cur+"이 있었어");
         int total = 0;
 
         for (int i = -2; i <= 2; i++) {
@@ -84,6 +93,8 @@ public class BOJ_20057 {
                     
                     if (spreadR < 0 || spreadC < 0 || spreadR >= N || spreadC >= N) {
                         res += (cur * sandSpread[i + 2][j + 2]) / 100;
+                        System.out.println("토네이도가 소멸됨 즉, 격자의 밖으로 나간 모래는?");
+                    	System.out.println((cur * sandSpread[i + 2][j + 2]) / 100);
                     } else {
                         int spreadSand = (cur * sandSpread[i + 2][j + 2]) / 100;
                         total += spreadSand;
@@ -92,6 +103,12 @@ public class BOJ_20057 {
                 }
             }
         }
+        for(int i=0;i<N;i++) {
+        	for(int j=0;j<N;j++) {
+        		System.out.print(map[i][j]+" ");
+        	}
+        	System.out.println();
+        }
 
         // 남은 모래
         int tempR = r + dx[dir];
@@ -99,10 +116,21 @@ public class BOJ_20057 {
         int remainSand = cur - total;
 
         if (tempR < 0 || tempC < 0 || tempR >= N || tempC >= N) {
+        	System.out.println("토네이도가 소멸됨 즉, 격자의 밖으로 나간 모래는?");
+        	System.out.println(remainSand);
             res += remainSand;
         } else {
+        	System.out.println("토네이도가 소멸되지 않았어");
             map[tempR][tempC] += remainSand;
+            
+            for(int i=0;i<N;i++) {
+            	for(int j=0;j<N;j++) {
+            		System.out.print(map[i][j]+" ");
+            	}
+            	System.out.println();
+            }
         }
+        
 
         // 현재 좌표의 모래는 전부 없어짐
         map[r][c] = 0; 
