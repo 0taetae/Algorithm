@@ -8,153 +8,164 @@ import java.util.StringTokenizer;
 
 public class BOJ_8972 {
 
-    static int R, C;
-    static int startR, startC;
-    
-    static class Info {
-        int x, y;
+	static int R, C;
+	static int startR, startC;
 
-        Info(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+	static class Info {
+		int x, y;
 
-    static char[][] map;
-    static ArrayList<Integer> comList = new ArrayList<>();
-    static ArrayList<Info> madList = new ArrayList<>();
-    static boolean isLose = false;
+		Info(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
 
-    // 좌하, 하, 우하, 좌, 정지, 우, 좌상, 상, 우상
-    static int[] dx = {1, 1, 1, 0, 0, 0, -1, -1, -1};
-    static int[] dy = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
+	static char[][] map;
+	static ArrayList<Integer> comList = new ArrayList<>();
+	static ArrayList<Info> madList = new ArrayList<>();
+	static boolean isLose = false;
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+	// 좌하, 하, 우하, 좌, 정지, 우, 좌상, 상, 우상
+	static int[] dx = { 1, 1, 1, 0, 0, 0, -1, -1, -1 };
+	static int[] dy = { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
 
-        st = new StringTokenizer(br.readLine());
-        R = Integer.parseInt(st.nextToken());
-        C = Integer.parseInt(st.nextToken());
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
 
-        map = new char[R][C];
-        for (int r = 0; r < R; r++) {
-            String str = br.readLine();
-            for (int c = 0; c < C; c++) {
-                map[r][c] = str.charAt(c);
-                if (map[r][c] == 'I') {
-                    startR = r;
-                    startC = c;
-                } else if (map[r][c] == 'R') {
-                    madList.add(new Info(r, c));
-                }
-            }
-        }
+		st = new StringTokenizer(br.readLine());
+		R = Integer.parseInt(st.nextToken());
+		C = Integer.parseInt(st.nextToken());
 
-        // 종수가 움직이려는 방향
-        String command = br.readLine();
-        for (int i = 0; i < command.length(); i++) {
-            comList.add(command.charAt(i) - '0');
-        }
+		map = new char[R][C];
+		for (int r = 0; r < R; r++) {
+			String str = br.readLine();
+			for (int c = 0; c < C; c++) {
+				map[r][c] = str.charAt(c);
+				if (map[r][c] == 'I') {
+					startR = r;
+					startC = c;
+				} else if (map[r][c] == 'R') {
+					madList.add(new Info(r, c));
+				}
+			}
+		}
 
-        for (int i = 0; i < comList.size(); i++) {
-            personMove(comList.get(i) - 1);
-            if (isLose) {
-                System.out.println("kraj " + (i + 1));
-                return;
-            }
-            madMove();
-            if (isLose) {
-                System.out.println("kraj " + (i + 1));
-                return;
-            }
-        }
+		// 종수가 움직이려는 방향
+		String command = br.readLine();
+		for (int i = 0; i < command.length(); i++) {
+			comList.add(command.charAt(i) - '0');
+		}
 
-        for (int r = 0; r < R; r++) {
-            for (int c = 0; c < C; c++) {
-                System.out.print(map[r][c]);
-            }
-            System.out.println();
-        }
-    }
+		for (int i = 0; i < comList.size(); i++) {
+			// 종수 이동
+			personMove(comList.get(i) - 1);
+			// 종수의 아두이노가 미친 아두이노가 있는 칸으로 이동한 경우
+			if (isLose) {
+				System.out.println("kraj " + (i + 1));
+				return;
+			}
+			// 미친 아두이노 이동
+			madMove();
+			// 미친 아두이노가 종수의 아두이노가 있는 칸으로 이동한 경우
+			if (isLose) {
+				System.out.println("kraj " + (i + 1));
+				return;
+			}
+		}
 
-    // 종수 이동
-    public static void personMove(int com) {
-        int nextR = startR + dx[com];
-        int nextC = startC + dy[com];
+		for (int r = 0; r < R; r++) {
+			for (int c = 0; c < C; c++) {
+				System.out.print(map[r][c]);
+			}
+			System.out.println();
+		}
+	}
 
-        if (nextR < 0 || nextR >= R || nextC < 0 || nextC >= C) {
-            isLose = true;  
-            return;
-        }
+	// 종수 이동
+	public static void personMove(int com) {
+		int nextR = startR + dx[com];
+		int nextC = startC + dy[com];
 
-        map[startR][startC] = '.';
-        startR = nextR;
-        startC = nextC;
+		if (nextR < 0 || nextR >= R || nextC < 0 || nextC >= C) {
+			isLose = true;
+			return;
+		}
 
-        if (map[startR][startC] == 'R') {
-            isLose = true;
-        } else {
-            map[startR][startC] = 'I';
-        }
-    }
+		map[startR][startC] = '.';
+		startR = nextR;
+		startC = nextC;
+		
+		// 미친 아두이노가 종수의 아두이노가 있는 칸으로 이동한 경우
+		if (map[startR][startC] == 'R') {
+			isLose = true;
+		} else {
+			map[startR][startC] = 'I';
+		}
+	}
 
-    // 미친 아두이노 이동
-    public static void madMove() {
-        int[][] tempMap = new int[R][C]; 
-        ArrayList<Info> newMadList = new ArrayList<>(); 
+	// 미친 아두이노 이동
+	public static void madMove() {
+		int[][] tempMap = new int[R][C];
+		ArrayList<Info> newMadList = new ArrayList<>();
 
-        for (int i = 0; i < madList.size(); i++) {
-            int minDist = Integer.MAX_VALUE;
-            int targetX = 0;
-            int targetY = 0;
+		for (int i = 0; i < madList.size(); i++) {
+			int minDist = Integer.MAX_VALUE;
+			int targetX = 0;
+			int targetY = 0;
 
-            for (int dir = 0; dir < 9; dir++) {
-                int nx = madList.get(i).x + dx[dir];
-                int ny = madList.get(i).y + dy[dir];
+			for (int dir = 0; dir < 9; dir++) {
+				int nx = madList.get(i).x + dx[dir];
+				int ny = madList.get(i).y + dy[dir];
 
-                if (nx >= 0 && ny >= 0 && nx < R && ny < C) {
-                    int dist = Math.abs(nx - startR) + Math.abs(ny - startC);
-                    if (dist < minDist) {
-                        minDist = dist;
-                        targetX = nx;
-                        targetY = ny;
-                    }
-                }
-            }
+				if (nx >= 0 && ny >= 0 && nx < R && ny < C) {
+					// 미친 아두이노는 |nx-startR| + |ny-startC| 가 가장 작아지는 방향으로 이동 
+					int dist = Math.abs(nx - startR) + Math.abs(ny - startC);
+					if (dist < minDist) {
+						minDist = dist;
+						targetX = nx;
+						targetY = ny;
+					}
+				}
+			}
+			// 미친 아두이노가 종수의 아두이노가 있는 칸으로 이동한 경우 
+			if (map[targetX][targetY] == 'I') {
+				isLose = true;
+				return;
+			}
+			
+			// 몇개의 아두이노가 해당 칸에 이동했는지 확인하기 위함 
+			tempMap[targetX][targetY]++;
+			newMadList.add(new Info(targetX, targetY));
+		}
+		
+		// 미친 아두이노 이동 후 빈칸 처리 
+		for (int i = 0; i < madList.size(); i++) {
+			map[madList.get(i).x][madList.get(i).y] = '.';
+		}
 
-            if (map[targetX][targetY] == 'I') {
-                isLose = true;
-                return;
-            }
+		madList = newMadList;
+		check(tempMap);
+	}
 
-            tempMap[targetX][targetY]++;
-            newMadList.add(new Info(targetX, targetY));
-        }
+	// 2개 이상의 미친 아두이노가 같은 칸에 있는지 확인
+	public static void check(int[][] tempMap) {
+		ArrayList<Info> updatedMadList = new ArrayList<>();
 
-        for (int i = 0; i < madList.size(); i++) {
-            map[madList.get(i).x][madList.get(i).y] = '.';
-        }
+		for (int r = 0; r < R; r++) {
+			for (int c = 0; c < C; c++) {
+				// 해당 칸에 미친 아두이노가 1개인 경우
+				if (tempMap[r][c] == 1) {
+					map[r][c] = 'R';
+					updatedMadList.add(new Info(r, c));
+				} 
+				// 해당 칸에 2개 이상의 미친 아두이노가 있는 경우 폭발 -> 빈칸 처리 
+				else if (tempMap[r][c] > 1) {
+					map[r][c] = '.';
+				}
+			}
+		}
 
-        madList = newMadList;
-        check(tempMap);
-    }
-
-    // 2개 이상의 미친 아두이노가 같은 칸에 있는지 확인
-    public static void check(int[][] tempMap) {
-        ArrayList<Info> updatedMadList = new ArrayList<>();
-
-        for (int r = 0; r < R; r++) {
-            for (int c = 0; c < C; c++) {
-                if (tempMap[r][c] == 1) { 
-                    map[r][c] = 'R';
-                    updatedMadList.add(new Info(r, c));
-                } else if (tempMap[r][c] > 1) { 
-                    map[r][c] = '.';
-                }
-            }
-        }
-
-        madList = updatedMadList; 
-    }
+		madList = updatedMadList;
+	}
 }
