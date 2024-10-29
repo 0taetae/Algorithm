@@ -10,9 +10,9 @@ public class BOJ_5972 {
     static int[] dist;
     
     static class Info implements Comparable<Info> {
-        int farm, cnt;
-        public Info(int farm, int cnt) {
-            this.farm = farm;
+        int barn, cnt;
+        public Info(int barn, int cnt) {
+            this.barn = barn;
             this.cnt = cnt;
         }
         @Override
@@ -58,16 +58,16 @@ public class BOJ_5972 {
         
         while (!pq.isEmpty()) {
         	Info cur = pq.poll();
-            int curFarm = cur.farm;
-            int curCost = cur.cnt;
+            int curbarn = cur.barn;
+            int curCnt = cur.cnt;
 
-            if (curCost > dist[curFarm]) continue;
+            if (curCnt > dist[curbarn]) continue;
             
-            for(int i=0;i<adj[curFarm].size();i++) {
-            	int newDist = curCost + adj[curFarm].get(i).cnt;
-                if (newDist < dist[adj[curFarm].get(i).farm]) {
-                    dist[adj[curFarm].get(i).farm] = newDist;
-                    pq.add(new Info(adj[curFarm].get(i).farm, newDist));
+            for(int i=0;i<adj[curbarn].size();i++) {
+            	int newDist = curCnt + adj[curbarn].get(i).cnt;
+                if (newDist < dist[adj[curbarn].get(i).barn]) {
+                    dist[adj[curbarn].get(i).barn] = newDist;
+                    pq.add(new Info(adj[curbarn].get(i).barn, newDist));
                 }
             }
         }
