@@ -29,7 +29,7 @@ public class SWEA_1824 {
                     arr[r][c] = str.charAt(c);
                 }
             }
-
+            // @가 없는 경우 바로 끝내기 
             visit = new boolean[R][C][4][16]; // 행, 열, 방향, 메모리
             res = false;
 

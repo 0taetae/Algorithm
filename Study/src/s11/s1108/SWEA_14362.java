@@ -35,7 +35,7 @@ public class SWEA_14362 {
 	                        break;
 	                    // 왼쪽으로 90도 회전
 	                    case 'L':
-	                        dir = (dir - 1 + 4) % 4;
+	                        dir = (dir - 1 + 4) % 4;  // 나머지 연산 보다 if문으로 dir<0이면, dir=3으로 수정하는 것이 효율적 
 	                        break;
 	                    // 오른쪽으로 90도 회전 
 	                    case 'R':
