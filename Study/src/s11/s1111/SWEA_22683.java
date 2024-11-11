@@ -1,14 +1,21 @@
-package s11.s1110;
+package s11.s1111;
 
 import java.io.*;
 import java.util.*;
 
 public class SWEA_22683 {
+	
+	
+	
+	// PQ 사용한 풀이 해결해보기
+	
+	
+	
     
-	static int N, K;
+    static int N, K;
     static char[][] map;
     static int startX, startY, endX, endY;
-    static class Info {
+    static class Info implements Comparator<Info>{
         int x, y, cnt, time, dir;
         Info(int x, int y, int dir, int cnt, int time) {
             this.x = x;
@@ -17,6 +24,10 @@ public class SWEA_22683 {
             this.cnt = cnt;  // 남은 나무 베기 횟수
             this.time = time;  // 조작 횟수 
         }
+		@Override
+		public int compare(Info o1, Info o2) {
+			return o1.time-o2.time;
+		}
     }
     // 상 우 하 좌
     static int[] dx = {-1, 0, 1, 0};
@@ -57,10 +68,10 @@ public class SWEA_22683 {
     }
 
     public static void bfs() {
-        Queue<Info> q = new LinkedList<>();
-        boolean[][][][] visited = new boolean[N][N][4][K+1];  // 행, 열, 방향, 나무 베고 남은 횟수 
+    	PriorityQueue<Info> q = new PriorityQueue<>();
+        boolean[][][] visited = new boolean[N][N][K+1];  // 행, 열, 방향, 나무 베고 남은 횟수 
         q.add(new Info(startX, startY, 0, K, 0));
-        visited[startX][startY][0][K] = true;
+        visited[startX][startY][K] = true;
         
         while (!q.isEmpty()) {
             Info cur = q.poll();
@@ -72,16 +83,16 @@ public class SWEA_22683 {
             
             // 우회전
             int nextDir = (cur.dir + 1) % 4;
-            if (!visited[cur.x][cur.y][nextDir][cur.cnt]) {
+            if (!visited[cur.x][cur.y][cur.cnt]) {
                 q.add(new Info(cur.x, cur.y, nextDir, cur.cnt, cur.time + 1));
-                visited[cur.x][cur.y][nextDir][cur.cnt] = true;
+                visited[cur.x][cur.y][cur.cnt] = true;
             }
             
             // 좌회전
             nextDir = (cur.dir - 1 + 4) % 4;
-            if (!visited[cur.x][cur.y][nextDir][cur.cnt]) {
+            if (!visited[cur.x][cur.y][cur.cnt]) {
                 q.add(new Info(cur.x, cur.y, nextDir, cur.cnt, cur.time + 1));
-                visited[cur.x][cur.y][nextDir][cur.cnt] = true;
+                visited[cur.x][cur.y][cur.cnt] = true;
             }
             
             // 직진
@@ -92,13 +103,13 @@ public class SWEA_22683 {
             // 이동할 칸이 나무일 경우 
             if (map[nx][ny] == 'T') {
             	// 나무를 벨 수 있는 경우 
-                if (cur.cnt > 0 && !visited[nx][ny][cur.dir][cur.cnt-1]) {
-                    q.add(new Info(nx, ny, cur.dir, cur.cnt - 1, cur.time + 1));
-                    visited[nx][ny][cur.dir][cur.cnt-1] = true;
+                if (cur.cnt > 0 && !visited[nx][ny][cur.cnt-1]) {
+                    q.add(new Info(nx, ny, cur.dir, cur.cnt - 1, cur.time + 2));
+                    visited[nx][ny][cur.cnt-1] = true;
                 }
-            } else if (!visited[nx][ny][cur.dir][cur.cnt]) {
+            } else if (!visited[nx][ny][cur.cnt]) {
                 q.add(new Info(nx, ny, cur.dir, cur.cnt, cur.time + 1));
-                visited[nx][ny][cur.dir][cur.cnt] = true;
+                visited[nx][ny][cur.cnt] = true;
             }
         }
     }
