@@ -84,7 +84,7 @@ public class SWEA_22683 {
                 visited[cur.x][cur.y][nextDir][cur.cnt] = true;
             }
             
-            // 직진
+            // 전진
             int nx = cur.x + dx[cur.dir];
             int ny = cur.y + dy[cur.dir];
             
