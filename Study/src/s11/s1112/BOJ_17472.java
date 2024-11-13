@@ -86,7 +86,8 @@ public class BOJ_17472 {
 		
 		make();
 		int res = 0;
-		for(Info cur : pq) {
+		while(!pq.isEmpty()) {
+			Info cur = pq.poll();
 			if(union(cur.a,cur.b)) {
 				res+=cur.len;
 			}
